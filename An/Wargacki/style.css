@@ -1,0 +1,163 @@
+/* Reset basics */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Bubblegum Sans", cursive;
+  background: linear-gradient(135deg, #f0f8ff, #ffe4e1); /* pastel blue → light pink */
+  color: #333333;
+  line-height: 1.5;
+  padding: 1rem;
+}
+
+/* Container with a soft “card” feel */
+.card-container {
+  max-width: 720px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 4px dashed #a0e7e5; /* pastel green border with a dashed, playful style */
+}
+
+/* Header: bold Y2K vibe */
+.card-header {
+  background: #ffb6c1; /* light pink */
+  padding: 2rem 1rem;
+  text-align: center;
+  border-bottom: 4px solid #a0e7e5; /* pastel green accent */
+}
+
+.card-header h1 {
+  color: #ffffff;
+  font-size: 2.75rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Message section: pastel backgrounds and bubbly text */
+.message-section {
+  background: #f0f0ff; /* very light lavender-blue */
+  padding: 1.5rem 1.25rem;
+  text-align: center;
+}
+
+.message-section p {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+/* Make the first line extra big and colorful */
+.big-text {
+  font-size: 2rem;
+  color: #ff69b4; /* hot pink */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* “KISSKISSkiss” styling */
+.kiss-text {
+  font-size: 1.5rem;
+  color: #00bfff; /* sky blue */
+  letter-spacing: 0.1em;
+}
+
+/* Signature styling */
+.signature {
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  color: #555555;
+  font-style: italic;
+}
+
+/* Gallery section: pastel accents */
+.gallery-section {
+  padding: 1.5rem 1.25rem;
+  background: #e0ffe0; /* very light mint */
+}
+
+.gallery-section h2 {
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
+  color: #ff69b4; /* hot pink */
+  text-align: center;
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  justify-items: center;
+}
+
+.photo-grid img {
+  width: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 3px solid #00bfff; /* pastel blue border around each photo */
+}
+
+/* Video Section (if used) */
+.video-section {
+  padding: 1.5rem 1.25rem;
+  background: #fff0f5; /* very light pink-lavender */
+  text-align: center;
+}
+
+.video-section h2 {
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
+  color: #ff69b4;
+}
+
+.video-section video,
+.video-wrapper {
+  max-width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive YouTube iframe wrapper (if you embed) */
+.video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Footer: pastel‐green strip */
+.card-footer {
+  background: #a0e7e5; /* pastel green */
+  padding: 1rem;
+  text-align: center;
+  font-size: 1rem;
+  color: #ffffff;
+  border-top: 4px solid #ffb6c1; /* pastel pink accent */
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .card-header h1 {
+    font-size: 2rem;
+  }
+  .big-text {
+    font-size: 1.75rem;
+  }
+  .gallery-section h2,
+  .video-section h2 {
+    font-size: 1.5rem;
+  }
+}
