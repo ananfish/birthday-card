@@ -228,6 +228,18 @@
       image-rendering: pixelated;
     }
 
+    /* Placeholder for missing images */
+    .photo-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(45deg, #ff69b4, #ffd700, #ff69b4);
+      color: white;
+      font-size: 0.5rem;
+      text-align: center;
+      text-shadow: 1px 1px 0 #000;
+    }
+
     /* --------------------------------------------
        Snowflake Animation (Enhanced)
     -------------------------------------------- */
@@ -302,6 +314,11 @@
       overflow: hidden;
     }
 
+    button.musicButton {
+      margin-right: 1rem;
+      background: linear-gradient(45deg, #4169e1, #1e90ff, #4169e1);
+    }
+
     @keyframes buttonGlow {
       0%, 100% {
         box-shadow: 0 0 20px rgba(255, 105, 180, 0.6);
@@ -321,6 +338,14 @@
 
     button.playButton:active {
       transform: scale(0.95);
+    }
+
+    /* Audio status indicator */
+    .audio-status {
+      font-size: 0.5rem;
+      color: #050505;
+      text-shadow: 1px 1px 0 #ffffff;
+      margin-top: 0.5rem;
     }
 
     /* --------------------------------------------
@@ -378,6 +403,13 @@
       60% { transform: translate(-5px, -25px) rotate(360deg) scale(1.4); }
       75% { transform: translate(15px, -12px) rotate(135deg) scale(0.9); }
     }
+
+    .button-container {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-direction: column;
+    }
   </style>
 </head>
 
@@ -385,9 +417,9 @@
   <div class="container">
     <!-- Background Music: 8-Bit Melody -->
     <audio
+      id="backgroundMusic"
       class="background"
       src="An/Wargacki/assets/sounds/happy_birthday.mp3"
-      autoplay
       loop
     ></audio>
 
@@ -436,23 +468,32 @@
     <!-- Photo Gallery -->
     <div class="gallery">
       <div class="frame-heart">
-        <img src="An/Wargacki/assets/images/photo1.jpg" alt="Photo 1" />
+        <img src="An/Wargacki/assets/images/photo1.jpg" alt="Photo 1" onerror="showPlaceholder(this, '💕 Photo 1 💕')" />
       </div>
       <div class="frame-star">
-        <img src="An/Wargacki/assets/images/photo2.jpg" alt="Photo 2" />
+        <img src="An/Wargacki/assets/images/photo2.jpg" alt="Photo 2" onerror="showPlaceholder(this, '⭐ Photo 2 ⭐')" />
       </div>
       <div class="frame-heart">
-        <img src="An/Wargacki/assets/images/photo3.jpg" alt="Photo 3" />
+        <img src="An/Wargacki/assets/images/photo3.jpg" alt="Photo 3" onerror="showPlaceholder(this, '💖 Photo 3 💖')" />
       </div>
       <div class="frame-star">
-        <img src="An/Wargacki/assets/images/photo4.jpg" alt="Photo 4" />
+        <img src="An/Wargacki/assets/images/photo4.jpg" alt="Photo 4" onerror="showPlaceholder(this, '✨ Photo 4 ✨')" />
       </div>
     </div>
 
-    <!-- "Secret" Button -->
-    <button class="playButton" onclick="playMarry()">
-      secret🤫
-    </button>
+    <!-- Buttons -->
+    <div class="button-container">
+      <div>
+        <button class="playButton musicButton" onclick="toggleBackgroundMusic()">
+          🎵 Music 🎵
+        </button>
+        <button class="playButton" onclick="playMarry()">
+          secret🤫
+        </button>
+      </div>
+      <div class="audio-status" id="audioStatus">Click 🎵 Music to start background music!</div>
+    </div>
+    
     <audio id="marryAudio" src="An/Wargacki/assets/sounds/marry.mp3"></audio>
 
     <!-- Footer (Cat Motif & Credits) -->
@@ -475,6 +516,28 @@
       span.style.animationDuration = Math.random() * 5 + 4 + "s";
       span.style.animationDelay = Math.random() * 2 + "s";
       container.appendChild(span);
+    }
+
+    // Background music control
+    let backgroundMusicPlaying = false;
+    const backgroundMusic = document.getElementById("backgroundMusic");
+    const audioStatus = document.getElementById("audioStatus");
+
+    function toggleBackgroundMusic() {
+      if (!backgroundMusicPlaying) {
+        backgroundMusic.play().then(() => {
+          backgroundMusicPlaying = true;
+          audioStatus.textContent = "🎵 Background music playing! 🎵";
+        }).catch(error => {
+          audioStatus.textContent = "❌ Music file not found - check file path!";
+          console.log("Background music error:", error);
+        });
+      } else {
+        backgroundMusic.pause();
+        backgroundMusic.currentTime = 0;
+        backgroundMusicPlaying = false;
+        audioStatus.textContent = "🎵 Background music stopped";
+      }
     }
 
     // Heart rain effect
@@ -501,11 +564,16 @@
       const audio = document.getElementById("marryAudio");
       if (audio.paused) {
         audio.volume = 0.8;
-        audio.play();
-        createHeartRain();
+        audio.play().then(() => {
+          createHeartRain();
+          audioStatus.textContent = "💖 Secret audio playing! 💖";
+        }).catch(error => {
+          audioStatus.textContent = "❌ Secret audio file not found!";
+          console.log("Marry audio error:", error);
+        });
 
         // Create button click effect
-        const button = document.querySelector('.playButton');
+        const button = document.querySelector('.playButton:not(.musicButton)');
         button.style.transform = 'scale(0.9)';
         setTimeout(() => {
           button.style.transform = 'scale(1.1)';
@@ -516,7 +584,16 @@
       } else {
         audio.pause();
         audio.currentTime = 0;
+        audioStatus.textContent = "🤫 Secret stopped";
       }
+    }
+
+    // Show placeholder when image fails to load
+    function showPlaceholder(img, text) {
+      const placeholder = document.createElement("div");
+      placeholder.className = "photo-placeholder";
+      placeholder.textContent = text;
+      img.parentNode.replaceChild(placeholder, img);
     }
 
     // Enhanced sparkle effects with varied sizes and glitchy kaomoji
